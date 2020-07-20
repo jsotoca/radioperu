@@ -1,5 +1,7 @@
 {
   "name": "radioperu",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

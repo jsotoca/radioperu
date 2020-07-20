@@ -9,13 +9,13 @@ import { Component, OnInit } from '@angular/core';
 export class CabeceraComponent implements OnInit {
 
   constructor(
-    private readonly ui:UiService
+    private ui:UiService
   ) { }
 
   ngOnInit() {}
 
   cambiarModoVisual(){
-    document.body.classList.toggle('dark');
+    this.ui.cambiarModoVisual();
   }
 
 }
