@@ -5,18 +5,18 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ContenidoPageRoutingModule } from './contenido-routing.module';
+import { EmisoraPageRoutingModule } from './emisora-routing.module';
 
-import { ContenidoPage } from './contenido.page';
+import { EmisoraPage } from './emisora.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ContenidoPageRoutingModule,
+    EmisoraPageRoutingModule,
     ComponentesModule
   ],
-  declarations: [ContenidoPage]
+  declarations: [EmisoraPage]
 })
-export class ContenidoPageModule {}
+export class EmisoraPageModule {}

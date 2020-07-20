@@ -11,6 +11,10 @@ const routes: Routes = [
     path: 'contenido',
     loadChildren: () => import('./paginas/contenido/contenido.module').then( m => m.ContenidoPageModule)
   },
+  {
+    path: 'emisora',
+    loadChildren: () => import('./paginas/emisora/emisora.module').then( m => m.EmisoraPageModule)
+  },
 ];
 
 @NgModule({

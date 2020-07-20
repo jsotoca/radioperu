@@ -1,3 +1,4 @@
+import { UiService } from './../../servicios/ui.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,8 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CabeceraComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private readonly ui:UiService
+  ) { }
 
   ngOnInit() {}
+
+  cambiarModoVisual(){
+    document.body.classList.toggle('dark');
+  }
 
 }
