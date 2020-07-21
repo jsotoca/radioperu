@@ -1,8 +1,8 @@
-import { LoadingController } from '@ionic/angular';
-import { UiService } from './../../servicios/ui.service';
-import { Component, OnInit } from '@angular/core';
+import { StorageService } from './../../servicios/storage.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Howl } from 'howler';
 import { EmisoraI } from 'src/app/interfaces/emisoras.interface';
+import { IonSlides } from '@ionic/angular';
 
 @Component({
   selector: 'app-contenido',
@@ -51,11 +51,6 @@ export class ContenidoPage implements OnInit {
         titulo: "planeta", 
         stream: "https://19013.live.streamtheworld.com/CRP_PLA_SC?dist=20001",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/planeta.png"
-    },
-    {
-        titulo: "karibeña", 
-        stream: "http://167.114.118.120:744",
-        logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/karibe%C3%B1a.png"
     },
     {
         titulo: "panemericana", 
@@ -108,11 +103,6 @@ export class ContenidoPage implements OnInit {
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/inolvidable.png"
     },
     {
-        titulo: "ritmo romantica", 
-        stream: "https://playerservices.streamtheworld.com/pls/CRP_RIT.pls",
-        logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/romantica.png"
-    },
-    {
         titulo: "viva fm", 
         stream: "https://tupanel.info:8746/stream",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/vivafm.png"
@@ -121,11 +111,6 @@ export class ContenidoPage implements OnInit {
         titulo: "radio magica", 
         stream: "https://19493.live.streamtheworld.com/MAG_SC?dist=20001",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/magica.png"
-    },
-    {
-        titulo: "nuevo tiempo", 
-        stream: "https://stream.live.novotempo.com/radio/smil:radionuevotiempo.smil/playlist.m3u8",
-        logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/nuevotiempo.png"
     },
     {
         titulo: "cumbia mix", 
@@ -141,11 +126,6 @@ export class ContenidoPage implements OnInit {
         titulo: "perucumbia", 
         stream: "https://tupanel.info:2000/stream/perucumbia",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/perucumbia.png"
-    },
-    {
-        titulo: "ovacion", 
-        stream: "https://5949aa132c8fb.streamlock.net:554/ipradioovacion1/liveovacion1radio/playlist.m3u8",
-        logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/ovacion.png"
     },
     {
         titulo: "telesterio", 
@@ -214,35 +194,26 @@ export class ContenidoPage implements OnInit {
     },
   ];
 
+  @ViewChild('slidesPrincipal',{static:true}) slides:IonSlides;
   emisoraSeleccionada:EmisoraI = null;
   reproductor:Howl = null;
   estaReproduciendo:boolean = false;
-  estaCargando:boolean = false;
+  esFavorito:boolean = null;
+  
   constructor(
-      private loadingController:LoadingController
+      public storage:StorageService
   ) { }
 
   ngOnInit() {
     this.emisoraSeleccionada = this.emisoras[5];
     this.reproducir();
+    this.slides.lockSwipes(true);
   }
 
-  async present() {
-    this.estaCargando = true;
-    return await this.loadingController.create({
-    }).then(a => {
-      a.present().then(() => {
-        console.log('presented');
-        if (!this.estaCargando) {
-          a.dismiss().then(() => console.log('abort presenting'));
-        }
-      });
-    });
-  }
-
-  async dismiss() {
-    this.estaCargando = false;
-    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  moverPantalla(indice:number){
+    this.slides.lockSwipes(false);
+    this.slides.slideTo(indice);
+    this.slides.lockSwipes(true);
   }
 
   seleccionarEmisora(emisora:EmisoraI){
@@ -251,23 +222,18 @@ export class ContenidoPage implements OnInit {
   }
 
   async reproducir(){
-    const loading = await this.loadingController.create({
-    message: 'Please wait...',
-    });
-    await loading.present();
     this.detener();
+    this.esFavorito = await this.storage.emisoraYaGuardada(this.emisoraSeleccionada);
     this.reproductor = new Howl({
         src:this.emisoraSeleccionada.stream,
         html5:true,
         onloaderror: ()=>{
-            loading.dismiss();
         },
         onplay: async ()=>{
             this.estaReproduciendo = true;
         }
     });
     this.reproductor.play();
-    if(this.reproductor) loading.dismiss();
   }
 
   detener(){
@@ -280,6 +246,26 @@ export class ContenidoPage implements OnInit {
   cambiarEstado(){
       if(this.estaReproduciendo) this.detener();
       else this.reproducir();
+  }
+
+  cambiarEmisora(mover:number){
+    this.detener();
+    let idx = this.emisoras.indexOf(this.emisoraSeleccionada);
+    idx+=mover;
+    if(idx == -1) idx = this.emisoras.length -1 ;
+    if(idx == this.emisoras.length) idx = 0 ;
+    this.emisoraSeleccionada = this.emisoras[idx];
+    this.reproducir();
+  }
+
+  async guardarFavorito(){
+    this.buscarFavorito();
+    this.storage.guardarEmisora(this.emisoraSeleccionada);
+  }
+
+  buscarFavorito(){
+    const encontrado = this.storage.emisorasFavoritas.indexOf(this.emisoraSeleccionada);
+    this.esFavorito = encontrado !== -1;
   }
 
 }

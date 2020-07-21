@@ -4,25 +4,37 @@
         <ion-row class="ion-align-items-center">
             <ion-col size="12" size-md="10" offset-md="1">
                 <ion-segment color="primary" value="todas">
-                    <ion-segment-button value="todas">
-                        <ion-label class="segmentadores" >Todas</ion-label>
+                    <ion-segment-button (click)="moverPantalla(0)" value="todas">
+                        <ion-label class="segmentadores">Todas Las Emisoras</ion-label>
                     </ion-segment-button>
-                    <ion-segment-button value="recientes">
-                        <ion-label class="segmentadores" >Recientes</ion-label>
-                    </ion-segment-button>
-                    <ion-segment-button value="favoritos">
-                        <ion-label class="segmentadores" >Favoritos</ion-label>
+                    <ion-segment-button (click)="moverPantalla(1)" value="favoritos">
+                        <ion-label class="segmentadores">Mis Favoritos</ion-label>
                     </ion-segment-button>
                 </ion-segment>
-                <ion-grid fixed>
-                    <ion-row>
-                        <ion-col *ngFor="let emisora of emisoras"  size="6" size-md="2">
-                            <div (click)="seleccionarEmisora(emisora)">
-                                <img style="border-radius: 5px !important;" [src]="emisora.logo" [alt]="emisora.titulo">
-                            </div>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
+                <ion-slides class="mainSlides" #slidesPrincipal>
+                    <ion-slide>
+                        <ion-grid fixed>
+                            <ion-row>
+                                <ion-col *ngFor="let emisora of emisoras"  size="4" size-md="2">
+                                    <div  (click)="seleccionarEmisora(emisora)">
+                                        <img [class]="(emisora.stream == emisoraSeleccionada.stream)? 'border-imagen': ''" style="border-radius: 5px !important;" [src]="emisora.logo" [alt]="emisora.titulo">
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-slide>
+                    <ion-slide>
+                        <ion-grid fixed>
+                            <ion-row>
+                                <ion-col *ngFor="let favorito of storage.emisorasFavoritas"  size="4" size-md="2">
+                                    <div  (click)="seleccionarEmisora(favorito)">
+                                        <img [class]="(favorito.stream == emisoraSeleccionada.stream)? 'border-imagen': ''" style="border-radius: 5px !important;" [src]="favorito.logo" [alt]="favorito.titulo">
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-slide>
+                </ion-slides>
             </ion-col>
         </ion-row>
     </ion-grid>
@@ -30,18 +42,25 @@
 <ion-footer>
     <ion-item>
         <ion-thumbnail slot="start" style="margin-right: 5px !important;">
-            <img [src]="emisoraSeleccionada.logo" />
+            <img style="border-radius: 5px !important;" [src]="emisoraSeleccionada.logo" />
         </ion-thumbnail>
-        <div style="width: 100% !important;">
-            <div class="ion-margin-start ion-margin-top">
-                <ion-label class="titulo-radio">{{emisoraSeleccionada.titulo}}</ion-label>
-                <ion-label class="subtitulo-radio">{{emisoraSeleccionada.titulo}} - 98.03 Fm</ion-label>
-            </div>
-            <ion-range readonly style="margin-left: 5px !important;" min="0" max="100" color="success"></ion-range>
-        </div>
+        <ion-label style="margin-left: 5px !important;">
+            <ion-label class="titulo-radio">{{emisoraSeleccionada.titulo}}</ion-label>
+            <ion-label *ngIf="estaReproduciendo"  class="subtitulo-radio ion-text-wrap">98.03 Fm</ion-label>
+            <ion-label *ngIf="!estaReproduciendo" class="subtitulo-radio ion-text-wrap">Cargando...</ion-label>
+        </ion-label>
         <ion-buttons slot="end">
+            <ion-button (click)="guardarFavorito()">
+                <ion-icon  [name]="this.esFavorito ? 'heart-dislike-outline' : 'heart-outline'"></ion-icon>
+            </ion-button>
+            <ion-button (click)="cambiarEmisora(-1)">
+                <ion-icon name="play-skip-back-outline"></ion-icon>
+            </ion-button>
             <ion-button (click)="cambiarEstado()">
-                <ion-icon slot="icon-only" [name]="this.estaReproduciendo ? 'stop-outline' : 'play-outline'"></ion-icon>
+                <ion-icon [name]="this.estaReproduciendo ? 'stop-outline' : 'play-outline'"></ion-icon>
+            </ion-button>
+            <ion-button (click)="cambiarEmisora(+1)">
+                <ion-icon name="play-skip-forward-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-item>
