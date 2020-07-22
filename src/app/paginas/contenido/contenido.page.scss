@@ -8,9 +8,9 @@
 
 .titulo-radio {
     font-family: 'Poppins Regular', sans-serif;
-    font-weight: 600 !important;
-    font-size: 15px !important;
-    line-height: 23px !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
     text-transform: capitalize !important;
 }
 
@@ -37,4 +37,9 @@
 .mainSlide, .mainSlide ion-slide {
     width: 100%;
     height: 100%;
+}
+
+.botones {
+    margin-right: 1px !important;
+    margin-left: 1px !important;
 }

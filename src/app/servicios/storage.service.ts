@@ -23,10 +23,14 @@ export class StorageService {
   async guardarEmisora(emisora:EmisoraI){
     await this.cargarEmisoras();
     const encontrado = await this.emisorasFavoritas.find(e => e.titulo == emisora.titulo);
-    if(encontrado) this.eliminarEmisora(emisora);
+    if(encontrado){
+      this.eliminarEmisora(emisora);
+      return false;
+    } 
     else {
       this.emisorasFavoritas.unshift(emisora);
       this.guardarData('emisorasFavoritas',this.emisorasFavoritas);
+      return true;
     }
   }
 

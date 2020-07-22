@@ -44,22 +44,24 @@
         <ion-thumbnail slot="start" style="margin-right: 5px !important;">
             <img style="border-radius: 5px !important;" [src]="emisoraSeleccionada.logo" />
         </ion-thumbnail>
-        <ion-label style="margin-left: 5px !important;">
-            <ion-label class="titulo-radio">{{emisoraSeleccionada.titulo}}</ion-label>
-            <ion-label *ngIf="estaReproduciendo"  class="subtitulo-radio ion-text-wrap">98.03 Fm</ion-label>
-            <ion-label *ngIf="!estaReproduciendo" class="subtitulo-radio ion-text-wrap">Cargando...</ion-label>
+        <ion-label style="margin-left: 2px !important;">
+            <ion-label class="titulo-radio ion-text-wrap">{{emisoraSeleccionada.titulo}}</ion-label>
+            <ion-label class="subtitulo-radio ion-text-wrap">89.7 FM</ion-label>
         </ion-label>
         <ion-buttons slot="end">
-            <ion-button (click)="guardarFavorito()">
-                <ion-icon  [name]="this.esFavorito ? 'heart-dislike-outline' : 'heart-outline'"></ion-icon>
+            <ion-button class="botones" (click)="guardarFavorito()">
+                <ion-icon  
+                    [name]="this.esFavorito ? 'heart-dislike-outline' : 'heart-outline'"
+                    [ngStyle]="{'color': this.esFavorito ? 'var(--ion-color-primary)' : '' }"
+                ></ion-icon>
             </ion-button>
-            <ion-button (click)="cambiarEmisora(-1)">
+            <ion-button class="botones" (click)="cambiarEmisora(-1)">
                 <ion-icon name="play-skip-back-outline"></ion-icon>
             </ion-button>
-            <ion-button (click)="cambiarEstado()">
+            <ion-button class="botones" (click)="cambiarEstado()">
                 <ion-icon [name]="this.estaReproduciendo ? 'stop-outline' : 'play-outline'"></ion-icon>
             </ion-button>
-            <ion-button (click)="cambiarEmisora(+1)">
+            <ion-button class="botones" (click)="cambiarEmisora(+1)">
                 <ion-icon name="play-skip-forward-outline"></ion-icon>
             </ion-button>
         </ion-buttons>

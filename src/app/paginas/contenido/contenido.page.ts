@@ -18,7 +18,7 @@ export class ContenidoPage implements OnInit {
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/rpp.png"
     },
     {
-        titulo: "radio corazon", 
+        titulo: "corazon", 
         stream: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_CORAZON_SC",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/corazon.png"
     },
@@ -78,22 +78,22 @@ export class ContenidoPage implements OnInit {
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/kalle.png"
     },
     {
-        titulo: "radio z rock & pop", 
+        titulo: "z rock & pop", 
         stream: "http://167.114.118.120:7440/;",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/z.png"
     },
     {
-        titulo: "radio oxigeno", 
+        titulo: "oxigeno", 
         stream: "https://20813.live.streamtheworld.com/RADIO_OXIGENO_SC",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/oxigeno.png"
     },
     {
-        titulo: "radio nueva q", 
+        titulo: "nueva q", 
         stream: "https://14653.live.streamtheworld.com/CRP_NQ_SC?dist=20001",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/nuevaq.png"
     },
     {
-        titulo: "radio capital", 
+        titulo: "capital", 
         stream: "https://15383.live.streamtheworld.com/RADIO_CAPITAL_SC",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/capital.png"
     },
@@ -108,7 +108,7 @@ export class ContenidoPage implements OnInit {
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/vivafm.png"
     },
     {
-        titulo: "radio magica", 
+        titulo: "magica", 
         stream: "https://19493.live.streamtheworld.com/MAG_SC?dist=20001",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/magica.png"
     },
@@ -133,7 +133,7 @@ export class ContenidoPage implements OnInit {
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/telestereo.png"
     },
     {
-        titulo: "radio uno", 
+        titulo: "uno", 
         stream: "https://streamingv2.shoutcast.com/radiounotacna",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/uno.png"
     },
@@ -153,7 +153,7 @@ export class ContenidoPage implements OnInit {
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/bethel.png"
     },
     {
-        titulo: "radio union", 
+        titulo: "union", 
         stream: "http://67.212.179.138:7218/;?_=0.9957225059656298",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/union.png"
     },
@@ -168,27 +168,27 @@ export class ContenidoPage implements OnInit {
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/sonorama.png"
     },
     {
-        titulo: "radio inca", 
+        titulo: "inca", 
         stream: "https://14013.live.streamtheworld.com/CRP_INC_SC?type=20001",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/inca.png"
     },
     {
-        titulo: "radio nova", 
+        titulo: "nova", 
         stream: "http://node-33.zeno.fm/t5hu9gh8z5quv?rj-ttl=5&rj-tok=AAABc22H9tYApFCeKAo_WL43jA",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/nova.png"
     },
     {
-        titulo: "radio exito", 
+        titulo: "exito", 
         stream: "http://67.212.179.138:7200/;stream/1;",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/exito.png"
     },
     {
-        titulo: "radio red ingetridad", 
+        titulo: "red ingetridad", 
         stream: "https://player.servidor.stream/secure-ssl/7006",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/integridad.png"
     },
     {
-        titulo: "radio marañon", 
+        titulo: "marañon", 
         stream: "https://serverssl.innovatestream.pe:8080/http://167.114.118.120:7112/stream/1/",
         logo: "https://radioperu.s3.us-east-2.amazonaws.com/emisoras/marañon.png"
     },
@@ -205,7 +205,7 @@ export class ContenidoPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.emisoraSeleccionada = this.emisoras[5];
+    this.emisoraSeleccionada = this.emisoras[10];
     this.reproducir();
     this.slides.lockSwipes(true);
   }
@@ -259,13 +259,8 @@ export class ContenidoPage implements OnInit {
   }
 
   async guardarFavorito(){
-    this.buscarFavorito();
-    this.storage.guardarEmisora(this.emisoraSeleccionada);
-  }
-
-  buscarFavorito(){
-    const encontrado = this.storage.emisorasFavoritas.indexOf(this.emisoraSeleccionada);
-    this.esFavorito = encontrado !== -1;
+    const guardado = await this.storage.guardarEmisora(this.emisoraSeleccionada);
+    this.esFavorito = guardado;
   }
 
 }
